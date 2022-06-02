@@ -12,7 +12,7 @@ use bevy::{
     input::{
         keyboard::{KeyCode, KeyboardInput},
         mouse::{MouseButton, MouseButtonInput, MouseScrollUnit, MouseWheel},
-        ElementState, Input,
+        ButtonState, Input,
     },
     prelude::EventReader,
     utils::HashMap,
@@ -172,8 +172,8 @@ pub fn process_input(
                     _ => None,
                 };
                 let pressed = match mouse_button_event.state {
-                    ElementState::Pressed => true,
-                    ElementState::Released => false,
+                    ButtonState::Pressed => true,
+                    ButtonState::Released => false,
                 };
                 if let Some(button) = button {
                     events.push(egui::Event::PointerButton {
@@ -233,8 +233,8 @@ pub fn process_input(
         for ev in input_events.ev_keyboard_input.iter() {
             if let Some(key) = ev.key_code.and_then(bevy_to_egui_key) {
                 let pressed = match ev.state {
-                    ElementState::Pressed => true,
-                    ElementState::Released => false,
+                    ButtonState::Pressed => true,
+                    ButtonState::Released => false,
                 };
                 let egui_event = egui::Event::Key {
                     key,
@@ -243,7 +243,7 @@ pub fn process_input(
                 };
                 focused_input.raw_input.events.push(egui_event);
 
-                // We also check that it's an `ElementState::Pressed` event, as we don't want to
+                // We also check that it's an `ButtonState::Pressed` event, as we don't want to
                 // copy, cut or paste on the key release.
                 #[cfg(feature = "manage_clipboard")]
                 if command && pressed {
